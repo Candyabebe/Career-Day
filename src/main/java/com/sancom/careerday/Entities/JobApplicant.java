@@ -21,7 +21,8 @@ public class JobApplicant {
     @Column private String last_name;
     @Column private String email;
     @Column private String phone;
-    @Column private String education_level;
+    @Enumerated(EnumType.STRING)
+    @Column private EducationLevel education_level;
     @Column private int years_of_experience;
 
 }
