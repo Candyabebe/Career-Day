@@ -22,7 +22,7 @@ public class JobApplicant {
     @Column private String email;
     @Column private String phone;
     @Enumerated(EnumType.STRING)
-    @Column private EducationLevel education_level;
+     private EducationLevel education_level;
     @Column private int years_of_experience;
 
 }

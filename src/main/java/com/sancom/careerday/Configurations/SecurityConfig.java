@@ -9,13 +9,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-protected void configure(HttpSecurity security) throws Exception{
-    security.httpBasic().disable();
-}
-
-public void cofigure(WebSecurity web) throws Exception{
-    web
-            .ignoring()
-            .antMatchers("/resources/**", "/webapp/**");
-}
+    @Override
+    protected void configure(HttpSecurity security) throws Exception
+    {
+        security.httpBasic().disable();
+    }
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                .antMatchers("/resources/*", "/webapp/*");
+    }
 }

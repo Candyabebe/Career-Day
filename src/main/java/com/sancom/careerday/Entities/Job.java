@@ -18,7 +18,6 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
     @ManyToOne
     private JobType jobType;
 
@@ -35,7 +34,6 @@ public class Job {
     private LocalDate interview_date;
 
     @Enumerated(EnumType.STRING)
-    @Column
     private JobSataus status;
     @Column
     private LocalDate interview_start_time;
