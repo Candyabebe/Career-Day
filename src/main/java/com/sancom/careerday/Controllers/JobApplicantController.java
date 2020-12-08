@@ -20,7 +20,7 @@ import java.util.Collections;
 
 @Controller
 @RequestMapping("/applicant")
-public class JobApplicationController extends BaseController {
+public class JobApplicantController extends BaseController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
