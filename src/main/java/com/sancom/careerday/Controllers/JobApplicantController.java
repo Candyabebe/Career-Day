@@ -162,5 +162,21 @@ public class JobApplicantController extends BaseController {
             return sendResponse(false, "An error ocurred " + e.getLocalizedMessage());
         }
     }
+
+    @DeleteMapping("/deleteApplicant/{id}")
+    public ResponseEntity deleteApplication(@PathVariable Long id) {
+        try {
+            JobApplicant applicant=jobApplicantService.findById(id);
+            if (applicant.getId() != null) {
+                jobApplicantService.deleteJobApplicant(applicant.getId());
+            }
+            return sendResponse(true, "successfully Deleted this Applicant!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return sendResponse(false, "An error ocurred " + e.getLocalizedMessage());
+        }
+
+    }
 }
 
