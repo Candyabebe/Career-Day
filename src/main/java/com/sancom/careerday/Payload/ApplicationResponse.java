@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class ApplicationResponse {
     private Long id;
-     private Long job;
-     private Long jobApplicant;
+     private Job job;
+     private JobApplicant jobApplicant;
      private Date date_applied;
 }

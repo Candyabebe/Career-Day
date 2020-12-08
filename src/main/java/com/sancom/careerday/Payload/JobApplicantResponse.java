@@ -22,4 +22,7 @@ public class JobApplicantResponse {
     private String education_level;
 
     private int years_of_experience;
+
+    private String password;
+    private String confirm_password;
 }

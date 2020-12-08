@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" type="text/css" th:href="@{/js/advanced-datatable/images/favicon.ico}"/>
+
+    <title>Register</title>
+
+    <!--Core CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/bs3/css/bootstrap.min.css}"/>
+
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-reset.css}"/>
+
+
+    <link rel="stylesheet" type="text/css" th:href="@{/font-awesome/css/font-awesome.css}"/>
+
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style-responsive.css}"/>
+
+    <script th:src="@{/js/ie8-responsive-file-warning.js}"></script>
+
+
+    <script th:src="@{https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js}"></script>
+    <script th:src="@{https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js}"></script>
+</head>
+<body class="login-body">
+
+<div class="container">
+
+    <!--/*@thymesVar id="applicantResponse" type=""*/-->
+    <form class="form-signin" method="POST" th:object="${applicantResponse}" th:action="@{/applicant/register}" >
+        <h2 class="form-signin-heading">registration</h2>
+        <div class="login-wrap">
+            <p>Enter your personal details below</p>
+            <input type="text" class="form-control" name="first_name" placeholder="Firstname"  autofocus required>
+            <input type="text" class="form-control"  name="last_name" placeholder="Lastname"   autofocus required>
+            <input type="email" class="form-control" name="email" placeholder="Email"   autofocus required>
+            <input type="text" class="form-control"  name="phone" placeholder="Phone"   autofocus required>
+
+            <p>Qualifications</p>
+            <div>
+                <select class="form-control input-lg m-bot15" name="education_level"   required>
+                    <option>Select education level</option>
+                    <option value="POST_GRADUATE">Post Graduate</option>
+                    <option value="GRADUATE">Graduate</option>
+                    <option value="HIGH_SCHOOL">High School</option>
+                    <option value="DIPLOMA">Diploma</option>
+                    <option value="HIGHER_DIPLOMA">Higher Diploma</option>
+                    <option value="POST_GRADUATE_DIPLOMA">Post Graduate Diploma</option>
+                </select>
+
+            </div>
+            <input type="text" class="form-control" placeholder="Years Of Experience"   autofocus required>
+
+            <p> Enter your account details below</p>
+
+            <input type="password" class="form-control" name="password" placeholder="Password"  required>
+            <input type="password" class="form-control" name="confirm_password" placeholder="Re-type Password"  required>
+
+            <button class="btn btn-lg btn-login btn-block" type="submit">Submit</button>
+
+            <div class="registration">
+                Already Registered.
+                <a class="" href="/login">
+                    Login
+                </a>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+
+<!--Core js-->
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
