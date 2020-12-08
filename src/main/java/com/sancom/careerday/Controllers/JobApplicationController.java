@@ -8,29 +8,33 @@ import com.sancom.careerday.Payload.JobApplicantResponse;
 import com.sancom.careerday.Services.JobApplicantService;
 import com.sancom.careerday.Services.RoleService;
 import com.sancom.careerday.Services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.Collections;
 
 @Controller
-public class JobApplicantController extends BaseController {
+@RequestMapping("/applicant")
+public class JobApplicationController extends BaseController {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private JobApplicantService jobApplicantService;
     @Autowired
     private UserService userService;
     @Autowired
     RoleService roleService;
+
     @PostMapping("/register")
-    public ModelAndView register(@Valid @RequestBody JobApplicantResponse applicantResponse) {
+    public ModelAndView register(JobApplicantResponse applicantResponse) {
         try {
             JobApplicant applicant = new JobApplicant();
-            if (applicantResponse.getId()!= null) {
+            if (applicantResponse.getId() != null) {
                 applicant = jobApplicantService.findById(applicant.getId());
             }
             applicant.setEmail(applicantResponse.getEmail());
@@ -57,7 +61,6 @@ public class JobApplicantController extends BaseController {
                 applicant.setEducation_level(EducationLevel.POST_GRADUATE_DIPLOMA);
             }
             applicant = jobApplicantService.save(applicant);
-
             Role role = new Role();
             role.setDescription("APPLICANT");
             role.setName("APPLICANT");
@@ -104,3 +107,4 @@ public class JobApplicantController extends BaseController {
 
     }
 }
+

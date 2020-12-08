@@ -1,10 +1,10 @@
 package com.sancom.careerday.Controllers;
 
-import io.micrometer.core.instrument.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class BaseController {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected ResponseEntity sendResponse(boolean status,String message){
+    protected ResponseEntity sendResponse(boolean status, String message){
         if(!StringUtils.isEmpty(message))
             message=message.replaceAll("\\s{2,}"," ");
         final String res = ("{\"success\" : "+status+", \"msg\" :\""+message+"\"}");
