@@ -11,14 +11,16 @@ import com.sancom.careerday.Services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.awt.*;
 import java.util.Collections;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/applicant")
 public class JobApplicantController extends BaseController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -91,20 +93,74 @@ public class JobApplicantController extends BaseController {
     public ModelAndView login(JobApplicantResponse applicantResponse) {
         logger.info("email>>>>" + applicantResponse.getEmail());
         logger.info("password>>>>" + applicantResponse.getPassword());
-        User user = userService.findUserByUsernameAndPassword(applicantResponse.getEmail(), applicantResponse.getPassword());
+        List<User> users = userService.findUserByUsernameAndPassword(applicantResponse.getEmail(), applicantResponse.getPassword());
+        ModelAndView modelAndView = new ModelAndView();
+        if(users.isEmpty()){
+            modelAndView.setViewName("homePage");
+            return modelAndView;
+        }
+        User user=users.get(0);
         if (user != null) {
             logger.info("PASSED*********");
-            ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("homePage");
             return modelAndView;
         } else {
             logger.info("FAILED*********");
-
-            ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("homePage");
             return modelAndView;
         }
 
+    }
+
+    @GetMapping("/applicants")
+    public List<JobApplicant>findAll(){
+        return jobApplicantService.getAllJobApplicants();
+    }
+
+    @GetMapping("/applicants/{id}")
+    JobApplicant findById(@PathVariable Long id) {
+        JobApplicant jobApplicant=new JobApplicant();
+        try {
+           jobApplicant= jobApplicantService.findById(id);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return jobApplicant;
+    }
+    @GetMapping("/updateApplicant/{id}")
+    ResponseEntity updateApplicant(@RequestBody JobApplicantResponse applicantResponse, @PathVariable Long id){
+        try {
+            JobApplicant applicant=new JobApplicant();
+            applicant= jobApplicantService.findById(id);
+            applicant.setEmail(applicantResponse.getEmail());
+            applicant.setFirst_name(applicantResponse.getFirst_name());
+            applicant.setLast_name(applicantResponse.getLast_name());
+            applicant.setEmail(applicantResponse.getEmail());
+            applicant.setPhone(applicantResponse.getPhone());
+            applicant.setYears_of_experience(applicantResponse.getYears_of_experience());
+            if (applicantResponse.getEducation_level().equalsIgnoreCase("POST_GRADUATE")) {
+                applicant.setEducation_level(EducationLevel.POST_GRADUATE);
+            } else if (applicantResponse.getEducation_level().equalsIgnoreCase("GRADUATE")) {
+                applicant.setEducation_level(EducationLevel.GRADUATE);
+
+            }  else if (applicantResponse.getEducation_level().equalsIgnoreCase("DIPLOMA")) {
+                applicant.setEducation_level(EducationLevel.DIPLOMA);
+
+            } else if (applicantResponse.getEducation_level().equalsIgnoreCase("HIGHER_DIPLOMA")) {
+                applicant.setEducation_level(EducationLevel.HIGHER_DIPLOMA);
+
+            }else if (applicantResponse.getEducation_level().equalsIgnoreCase("HIGH_SCHOOL")) {
+                applicant.setEducation_level(EducationLevel.HIGH_SCHOOL);
+
+            } else if (applicantResponse.getEducation_level().equalsIgnoreCase("POST_GRADUATE_DIPLOMA")) {
+                applicant.setEducation_level(EducationLevel.POST_GRADUATE_DIPLOMA);
+            }
+            applicant = jobApplicantService.save(applicant);
+            return ResponseEntity.ok().body(applicant);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return sendResponse(false, "An error ocurred " + e.getLocalizedMessage());
+        }
     }
 }
 

@@ -2,6 +2,8 @@ package com.sancom.careerday.Services;
 
 import com.sancom.careerday.Entities.Applications;
 import com.sancom.careerday.Repositories.ApplicationsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class ApplicationServiceImpl implements ApplicationService {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private ApplicationsRepository repository;
     @Override
@@ -28,7 +31,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Applications> findAll(Applications applications) {
+    public List<Applications> findAll() {
         return repository.findAll();
     }
 
@@ -39,6 +42,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<Applications> findByApplicantId(Long applicantId)throws Exception {
+
         return repository.findByJobApplicant(applicantId);
     }
 

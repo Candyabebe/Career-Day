@@ -5,21 +5,21 @@ import com.sancom.careerday.Payload.ApplicationResponse;
 import com.sancom.careerday.Services.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-@Controller
-public class ApplicationsController extends BaseController{
+import java.util.List;
+
+@RestController
+@RequestMapping("/application")
+public class ApplicationsController extends BaseController {
     @Autowired
     ApplicationService applicationService;
 
     @PostMapping("/apply")
-    public ResponseEntity apply(@Valid @RequestBody ApplicationResponse applicantResponse) {
+    public ResponseEntity apply(@RequestBody Applications applicantResponse) {
         try {
             Applications application = new Applications();
-            if (applicantResponse.getId()!= null) {
+            if (applicantResponse.getId() != null) {
                 application = applicationService.findById(application.getId());
             }
             application.setJob(applicantResponse.getJob());
@@ -28,7 +28,7 @@ public class ApplicationsController extends BaseController{
 
             application = applicationService.save(application);
 
-            return sendResponse(true, "successfully applied for the job!");
+            return ResponseEntity.ok().body(application);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,10 +37,11 @@ public class ApplicationsController extends BaseController{
 
     }
 
-    @PostMapping("/deleteApplication")
-    public ResponseEntity deleteApplication(@Valid @RequestBody ApplicationResponse applicantResponse) {
+    @DeleteMapping("/deleteApplication/{id}")
+    public ResponseEntity deleteApplication(@PathVariable Long id) {
         try {
-            if (applicantResponse.getId()!= null) {
+            Applications applicantResponse=applicationService.findById(id);
+            if (applicantResponse.getId() != null) {
                 applicationService.deleteById(applicantResponse.getId());
             }
             return sendResponse(true, "successfully Deleted the application!");
@@ -51,24 +52,43 @@ public class ApplicationsController extends BaseController{
         }
 
     }
-    @PostMapping("/updateApplication")
-    public ResponseEntity updateApplication(@Valid @RequestBody ApplicationResponse applicantResponse) {
+
+    @PostMapping("/updateApplication/{id}")
+    public ResponseEntity updateApplication(@RequestBody Applications applicantResponse) {
         try {
             Applications application = new Applications();
-            if (applicantResponse.getId()!= null) {
-                application=applicationService.findById(applicantResponse.getId());
+            if (applicantResponse.getId() != null) {
+                application = applicationService.findById(applicantResponse.getId());
                 application.setJob(applicantResponse.getJob());
                 applicationService.save(application);
-            }else {
+                return ResponseEntity.ok().body(application);
+            } else {
                 return sendResponse(false, "We could not find this application!");
             }
-
-            return sendResponse(true, "successfully Deleted the application!");
 
         } catch (Exception e) {
             e.printStackTrace();
             return sendResponse(false, "An error ocurred " + e.getLocalizedMessage());
         }
+    }
 
+    @GetMapping("/applications")
+    public List<Applications> findAll() {
+        return applicationService.findAll();
+    }
+
+    @GetMapping("/applications/{id}")
+    ResponseEntity findById(@PathVariable Long id) {
+        try {
+            Applications applications = applicationService.findById(id);
+            if (applications != null) {
+               return ResponseEntity.ok().body(applications);
+            }else {
+                return sendResponse(false, "We could not find this application!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return sendResponse(false, "An error ocurred " + e.getLocalizedMessage());
+        }
     }
 }
