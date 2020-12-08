@@ -1,11 +1,9 @@
 package com.sancom.careerday.Controllers;
 
-import com.sancom.careerday.Entities.EducationLevel;
-import com.sancom.careerday.Entities.JobApplicant;
-import com.sancom.careerday.Entities.Role;
-import com.sancom.careerday.Entities.User;
+import com.sancom.careerday.Entities.*;
 import com.sancom.careerday.Payload.JobApplicantResponse;
 import com.sancom.careerday.Services.JobApplicantService;
+import com.sancom.careerday.Services.JobService;
 import com.sancom.careerday.Services.RoleService;
 import com.sancom.careerday.Services.UserService;
 import org.slf4j.Logger;
@@ -29,6 +27,8 @@ public class JobApplicantController extends BaseController {
     private JobApplicantService jobApplicantService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private JobService jobService;
     @Autowired
     RoleService roleService;
 
@@ -93,22 +93,25 @@ public class JobApplicantController extends BaseController {
     public ModelAndView login(JobApplicantResponse applicantResponse) {
         logger.info("email>>>>" + applicantResponse.getEmail());
         logger.info("password>>>>" + applicantResponse.getPassword());
-        List<User> users = userService.findUserByUsernameAndPassword(applicantResponse.getEmail(), applicantResponse.getPassword());
-        ModelAndView modelAndView = new ModelAndView();
-        if(users.isEmpty()){
-            modelAndView.setViewName("homePage");
-            return modelAndView;
-        }
-        User user=users.get(0);
+        User user = userService.findUserByUsernameAndPassword(applicantResponse.getEmail(), applicantResponse.getPassword());
         if (user != null) {
             logger.info("PASSED*********");
+
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("username", user.getUsername());
+            List<Job> jobList = jobService.getAllJobs();
+            modelAndView.addObject("jobList", jobList);
             modelAndView.setViewName("homePage");
             return modelAndView;
         } else {
             logger.info("FAILED*********");
+            List<Job> jobList = jobService.getAllJobs();
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("jobList", jobList);
             modelAndView.setViewName("homePage");
             return modelAndView;
         }
+
 
     }
 

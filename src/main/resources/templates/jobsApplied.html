@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="utf-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="ThemeBucket">
-    <link rel="shortcut icon" type="text/css" th:href="@{/images/favicon.png}" />
+    <link rel="shortcut icon" type="text/css" th:href="@{/images/favicon.png}"/>
 
 
     <title>Home</title>
 
     <!--Core CSS -->
-    <link rel="stylesheet" type="text/css" th:href="@{/bs3/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/bs3/css/bootstrap.min.css}"/>
 
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-reset.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-reset.css}"/>
 
 
-    <link rel="stylesheet" type="text/css" th:href="@{/font-awesome/css/font-awesome.css}" />
-
+    <link rel="stylesheet" type="text/css" th:href="@{/font-awesome/css/font-awesome.css}"/>
 
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 
 
-
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style-responsive.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style-responsive.css}"/>
 
     <script th:src="@{/js/ie8-responsive-file-warning.js}"></script>
 
@@ -39,7 +38,7 @@
 
 <body>
 
-<section id="container" >
+<section id="container">
     <!--header start-->
     <header class="header fixed-top clearfix">
         <!--logo start-->
@@ -98,28 +97,30 @@
     <!--header end-->
     <aside>
         <div id="sidebar" class="nav-collapse">
-            <!-- sidebar menu start-->            <div class="leftside-navigation">
-            <ul class="sidebar-menu" id="nav-accordion">
-                <li>
-                    <a href="index.html">
-                        <i class="fa fa-dashboard"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
+            <!-- sidebar menu start-->
+            <div class="leftside-navigation">
+                <ul class="sidebar-menu" id="nav-accordion">
+                    <li>
+                        <a href="index.html">
+                            <i class="fa fa-dashboard"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
 
 
-                <li class="sub-menu">
-                    <a href="javascript:;" class="active">
-                        <i class="fa fa-th"></i>
-                        <span>Jobs</span>
-                    </a>
-                    <ul class="sub">
-                        <li class="active"><a th:href="@{/applicant/accessHomePagePage}">Jobs Available</a></li>
-                        <li><a th:href="@{/applicant/accessAppliedJobs}">Jobs Applied</a></li>
-                    </ul>
-                </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;" class="active">
+                            <i class="fa fa-th"></i>
+                            <span>Jobs</span>
+                        </a>
+                        <ul class="sub">
+                            <li class="active"><a th:href="@{/applicant/accessHomePagePage}">Jobs Available</a></li>
+                            <li><a th:href="@{/applicant/accessAppliedJobs}">Jobs Applied</a></li>
+                        </ul>
+                    </li>
 
-            </ul></div>
+                </ul>
+            </div>
             <!-- sidebar menu end-->
         </div>
     </aside>
@@ -144,29 +145,32 @@
                                 <tr>
                                     <th> Job Type</th>
                                     <th class="hidden-phone">Descrition</th>
-                                    <th>Education Level Needed</th>
+                                    <th>Date Applied</th>
+                                    <th>Interview Date</th>
+                                    <th>Interview Start Time</th>
+                                    <th>Interview End Time</th>
                                     <th>Years Of Experience Needed</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:if="${jobList.empty}">
-                                    <td colspan="2"> No Jobs(s) Available</td>
-                                </tr>
-                                <tr th:each="job : ${jobList}">
-                                    <td><span th:text="${job.jobType.name}">  </span></td>
-                                    <td><span th:text="${job.description}">  </span></td>
-                                    <td><span th:text="${job.years_of_experience_needed}">  </span></td>
-                                    <td><span th:text="${job.education_level_needed}">  </span></td>
 
-                                    <td>
+                                <tr th:each="application : ${applicationsList}">
+                                    <td><span th:text="${application.job.jobType.name}">  </span></td>
+                                    <td><span th:text="${application.job.description}">  </span></td>
+                                    <td><span th:text="${application.date_applied}">  </span></td>
+                                    <td><span th:text="${application.job.interview_date}">  </span></td>
+                                    <td><span th:text="${application.job.interview_start_time}">  </span></td>
+                                    <td><span th:text="${application.job.job.interview_end_time}">  </span></td>
+
+                                    <td></td>
 
  <span th:onclick="'apply(\'' + ${job.id} + '\');'"
        class="btn btn-sm btn-primary">Apply
 
                                                     <i class="fa fa-edit"></i>
                                                 </span>
-                                        <span th:onclick="'editTrustee(\'' + ${job.id} + '\');'"
+                                        <span th:onclick="'revokeApplication(\'' + ${job.id} + '\');'"
                                               class="btn btn-sm btn-warning">Revoke Application
 
                                                     <i class="fa fa-edit"></i>
@@ -206,12 +210,5 @@
 <script th:src="@{/js/application.js}"></script>
 <script th:src="@{/js/bootbox.min.js}"></script>
 
-<script type="text/javascript">
 
-</script>
-</body>
-
-
-
-</body>
 </html>

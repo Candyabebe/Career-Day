@@ -1,12 +1,16 @@
 package com.sancom.careerday.Controllers;
 
 import com.sancom.careerday.Entities.Applications;
+import com.sancom.careerday.Entities.Job;
 import com.sancom.careerday.Payload.ApplicationResponse;
 import com.sancom.careerday.Services.ApplicationService;
+import com.sancom.careerday.Services.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -15,20 +19,21 @@ public class ApplicationsController extends BaseController {
     @Autowired
     ApplicationService applicationService;
 
-    @PostMapping("/apply")
-    public ResponseEntity apply(@RequestBody Applications applicantResponse) {
-        try {
-            Applications application = new Applications();
-            if (applicantResponse.getId() != null) {
-                application = applicationService.findById(application.getId());
-            }
-            application.setJob(applicantResponse.getJob());
-            applicantResponse.setDate_applied(applicantResponse.getDate_applied());
-            application.setJobApplicant(applicantResponse.getJobApplicant());
+    @Autowired
+    private JobService jobService;
 
+    @PostMapping("/apply")
+    public ResponseEntity apply(@PathParam("id") Long id) {
+        try {
+            logger.info("YES HERE APPLYING");
+            Applications application = new Applications();
+            Job job = jobService.findById(id);
+            application.setJob(job);
+            application.setDate_applied(LocalDate.now());
+            //application.setJobApplicant(applicantResponse.getJobApplicant());
             application = applicationService.save(application);
 
-            return ResponseEntity.ok().body(application);
+            return sendResponse(true, "Successfully applied");
 
         } catch (Exception e) {
             e.printStackTrace();
